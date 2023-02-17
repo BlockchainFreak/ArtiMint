@@ -23,6 +23,8 @@ import { publicProvider } from 'wagmi/providers/public'
 
 import { RainbowKitSiweNextAuthProvider, GetSiweMessageOptions } from '@rainbow-me/rainbowkit-siwe-next-auth';
 
+import { Alert, Modal, Confirm, Navbar } from '@/components'
+
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY
 
 const { chains, provider, webSocketProvider } = configureChains(
@@ -93,7 +95,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <RainbowKitSiweNextAuthProvider getSiweMessageOptions={getSiweMessageOptions}>
           <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
             <RecoilRoot>
+              <Navbar/>
               <Component {...pageProps} />
+              <Alert />
+              <Modal />
+              <Confirm />
             </RecoilRoot>
           </RainbowKitProvider>
         </RainbowKitSiweNextAuthProvider>

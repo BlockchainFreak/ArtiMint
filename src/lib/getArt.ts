@@ -10,8 +10,8 @@ export const generateArtImage = async (prompt: string) => {
         prompt: prompt,
         n: 1,
         size: "256x256",
-        response_format: "url", // can also be b64 json 
+        response_format: "b64_json", // can also be b64 json 
     })
 
-    return response.data.data[0].url
+    return response.data.data[0].b64_json || ""
 }

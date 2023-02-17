@@ -5,6 +5,7 @@ import mime from 'mime'
 import fs from 'fs'
 import path from 'path'
 
+// return the ipfs link that can be used as base Uri for the NFT
 export async function storeNFT(imagePath: string, name: string, description: any) {
     // load the file from disk
     const image = await fileFromPath(imagePath)
@@ -27,8 +28,10 @@ export async function storeNFT(imagePath: string, name: string, description: any
   * @param {string} filePath the path to a file to store
   * @returns {File} a File object containing the file content
   */
-async function fileFromPath(filePath: string) {
-    const content = await fs.promises.readFile(filePath)
-    const type = mime.getType(filePath)
-    return new File([content], path.basename(filePath), { type })
+export async function fileFromPath( image_b64_json: string) {
+    // convert the image_b64_json string to a buffer
+    const content = Buffer.from(image_b64_json, 'base64')
+    // convert buffer to blob
+    const blob = new Blob([content], { type: 'image/png' })
+    return blob
 }
