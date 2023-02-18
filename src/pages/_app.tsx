@@ -93,7 +93,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <SessionProvider refetchInterval={0} session={pageProps.session}>
         <RainbowKitSiweNextAuthProvider getSiweMessageOptions={getSiweMessageOptions}>
-          <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
+          <RainbowKitProvider appInfo={demoAppInfo} chains={chains} coolMode>
             <RecoilRoot>
               <Navbar/>
               <Component {...pageProps} />

@@ -22,4 +22,11 @@ contract NFT is ERC721URIStorage {
     function tokenURI(uint256 _tokenId) public view virtual override returns (string memory) {
         return super.tokenURI(_tokenId);
     }
+
+    function getTotalSupply() public view returns (uint256) {
+        return tokenId.current();
+    }
+
+    function getToken
+
 }

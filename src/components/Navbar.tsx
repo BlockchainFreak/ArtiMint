@@ -16,7 +16,7 @@ export default function Navbar() {
     return (
         <header>
             <Box>
-                <AppBar>
+                <AppBar sx={{ backgroundColor: "purple", padding: "0 25px" }}>
                     <Toolbar disableGutters>
                         <Tabs
                             value={currentTabValue}
@@ -25,14 +25,14 @@ export default function Navbar() {
                             sx={{ display: { xs: 'none', sm: 'flex' } }}
                         >
                             <Link href="/">
-                                <Tab label={<HomeIcon fontSize="medium" />}{...getIdProps(0)} />
+                                <Tab label={<HomeIcon fontSize="medium" sx={{color: "white"}}/>}{...getIdProps(0)} />
                             </Link>
                             <Link href="/mint">
                                 <Tab label={<Format text={"Mint"} />}{...getIdProps(1)} />
                             </Link>
-                            <Link href="/collection">
+                            {/* <Link href="/collection">
                                 <Tab label={<Format text={"Collection"} />} {...getIdProps(2)} />
-                            </Link>
+                            </Link> */}
                         </Tabs>
                         <Box sx={{ flexGrow: 1 }} />
                         <ConnectButton />
@@ -63,7 +63,7 @@ const getTabValue = (route: string) => {
             return 0
         case '/mint':
             return 1
-        case '/collection':
-            return 2
+        // case '/collection':
+        //     return 2
     }
 }

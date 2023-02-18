@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Button, TextField, Stack, Box } from "@mui/material"
 import { useState, useEffect } from 'react'
+import { Collection } from '@/components'
+
 import { generateArtImage } from '@/lib/getArt'
 import { fileFromPath, storeNFT } from '@/lib/storenft'
 import fs from 'fs'
@@ -14,22 +16,6 @@ export default function Home() {
   const [prompt, setPrompt] = useState("")
   const [image, setImage] = useState(bunnylink)
 
-  useEffect(() => {
-    // try {
-    //   // read from sample.txt file and set image to that
-    //   fs.readFile('../sample.txt', 'base64', (err, data) => {
-    //     if (err) {
-    //       console.error(err)
-    //       return
-    //     }
-    //     setImage(data)
-    //   })
-    // }
-    // catch (e) {
-    //   console.log(e)
-    // }
-  }, [])
-
   return (
     <>
       <Head>
@@ -39,38 +25,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Stack spacing={2} direction="column" alignItems="center" sx={{ margin: '50px' }}>
-          <TextField
-            label="Prompt"
-            variant="outlined"
-            size="small"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            // onClick={() => fileFromPath(bunnylink)}
-            onClick={() => setImage(prompt)}
-            // onClick={() => generateArtImage(prompt).then(console.log)}
-          >
-            Submit
-          </Button>
-          <Button
-            variant="contained"
-            onClick={async() => {
-              const res = await storeNFT(image, "test", "description")
-              console.log(res)
-            }}
-          >
-            Store NFT
-          </Button>
-          <Image
-            alt="generated art"
-            src={"data:image/png;base64, "+ image}
-            width={256}
-            height={256}
-          />
-        </Stack>
+        <Box sx={{height: '100px'}} />
+        <Collection/>
       </main>
     </>
   )

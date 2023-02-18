@@ -9,7 +9,7 @@ export const generateArtImage = async (prompt: string) => {
     const response = await openai.createImage({
         prompt: prompt,
         n: 1,
-        size: "256x256",
+        size: "1024x1024",
         response_format: "b64_json", // can also be b64 json 
     })
 

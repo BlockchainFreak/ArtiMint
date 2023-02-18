@@ -25,3 +25,15 @@ export const modalState = atom({
         title: '',
     }
 })
+
+export type Collection = {
+    owner: string,
+    name: string,
+    description: string,
+    image: string,
+}
+
+export const collectionState = atom<Collection[]>({
+    key: 'listingsState',
+    default: [] as Collection[]
+})
