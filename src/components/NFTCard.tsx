@@ -25,16 +25,26 @@ export default function NFTCard( tokenId: {tokenId: number}) {
     useEffect(() => {
         const fetchToken = async () => {
             const tokenURI = await ERC721Contract?.tokenURI(tokenId.tokenId)
+            console.log(token)
             const metaUri = tokenURI?.replace('ipfs://', 'https://ipfs.io/ipfs/')
+            if (!metaUri) return
             const response = await fetch(metaUri)
             const data = await response.json()
-            const img = data?.image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
-            const imgUrl = img.replace("ipfs://", "https://ipfs.io/ipfs/")
+            const imgUrl = data?.image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
+            let blbimg;
+            fetch(imgUrl)
+                .then(res => res.blob())
+                .then(blob => {
+                    const img = new Image(blob)
+                    img.src = URL.createObjectURL(blob);
+                    blbimg = img.src
+                })
+            console.log(imgUrl)
             setToken({
                 name: data?.name,
                 description: data?.description,
                 owner: address ?? "",
-                image: imgUrl,
+                image: blbimg,
             })
         }
 
@@ -45,6 +55,8 @@ export default function NFTCard( tokenId: {tokenId: number}) {
             console.log(e)
         }
     }, [])
+
+    console.log("imageurl:", token?.image)
 
     if (!isConnected) return null
 
@@ -89,7 +101,9 @@ export default function NFTCard( tokenId: {tokenId: number}) {
                 }}
             >
                 <Image
+                    // the
                     src={token.image} // token.image
+                    // src={"data:image/png; " + token.image} // token.image
                     alt={token.name}
                     width={256}
                     height={256}

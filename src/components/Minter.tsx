@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import { Box, TextField, Stack, Button, IconButton } from "@mui/material"
-import { useAccount, useSigner, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { useAccount, useSigner, useContract, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import { storeNFT } from "@/lib/storenft"
 import { generateArtImage } from "@/lib/getArt"
 import { useRecoilState } from "recoil"
@@ -47,7 +47,7 @@ const LeftBar = ({ image, setImage }: LeftBarProps) => {
 
     const [confirmation, setConfirmation] = useRecoilState(confirmationState)
 
-    const signer = useSigner({
+    const { data: signer } = useSigner({
         chainId: 80001,
         onError: (error) => {
             console.error(error)
@@ -61,17 +61,16 @@ const LeftBar = ({ image, setImage }: LeftBarProps) => {
 
     type hexPrefix = `0x${string}`
 
-    const { config } = usePrepareContractWrite({
+    const nftContract = useContract({
         address: process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS as hexPrefix,
         abi: abi,
-        functionName: 'mint',
-        args: [ipfsHash],
+        signerOrProvider: signer,
     })
-    const { data, write } = useContractWrite(config)
+    // const { data, write } = useContractWrite(config)
 
-    const { isLoading, isSuccess } = useWaitForTransaction({
-        hash: data?.hash,
-    })
+    // const { isLoading, isSuccess } = useWaitForTransaction({
+    //     hash: data?.hash,
+    // })
 
     const handleDeleteImage = () => {
         setConfirmation({
@@ -90,10 +89,11 @@ const LeftBar = ({ image, setImage }: LeftBarProps) => {
         try {
             const res = await storeNFT("fashion design " + image, name, description)
             setIpfsHash(res?.url ?? "")
-            if(!res?.url || !write) {
+            console.log(res?.url)
+            if(!res?.url) {
                 return
             }
-            write()
+            await nftContract?.mint(res?.url)
             setMinted(true)
         }
         catch (e) {
@@ -148,13 +148,13 @@ const LeftBar = ({ image, setImage }: LeftBarProps) => {
                     Mint NFT
                 </Button>
             }
-            {
+            {/* {
                 // transaction status loading or success
                 minted && <Button color="inherit">
                     {isLoading && "Loading..."}
                     {isSuccess && "Success"}
                 </Button>
-            }
+            } */}
         </Stack>
     )
 }
