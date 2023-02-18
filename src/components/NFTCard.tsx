@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import NImage from 'next/image'
 import { useState, useEffect } from 'react'
 import { Box, Stack, Card, CardHeader, CardActions, CardContent, Button, IconButton } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -6,14 +6,14 @@ import { type Collection } from 'state'
 import { useAccount, useContract, useProvider } from 'wagmi'
 import { abi } from "../lib/getNFTabi"
 
-export default function NFTCard( tokenId: {tokenId: number}) {
+export default function NFTCard(tokenId: { tokenId: number }) {
 
     const [isHovered, setIsHovered] = useState(false)
 
     const [token, setToken] = useState<Collection | null>(null)
 
     const { address, isConnected } = useAccount()
-    
+
     const provider = useProvider();
 
     const ERC721Contract = useContract({
@@ -31,20 +31,13 @@ export default function NFTCard( tokenId: {tokenId: number}) {
             const response = await fetch(metaUri)
             const data = await response.json()
             const imgUrl = data?.image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
-            let blbimg;
-            fetch(imgUrl)
-                .then(res => res.blob())
-                .then(blob => {
-                    const img = new Image(blob)
-                    img.src = URL.createObjectURL(blob);
-                    blbimg = img.src
-                })
-            console.log(imgUrl)
+            
+
             setToken({
                 name: data?.name,
                 description: data?.description,
                 owner: address ?? "",
-                image: blbimg,
+                image: imgUrl,
             })
         }
 
@@ -60,9 +53,9 @@ export default function NFTCard( tokenId: {tokenId: number}) {
 
     if (!isConnected) return null
 
-    if(!address) return null
+    if (!address) return null
 
-    if(!token) return null
+    if (!token) return null
 
     return (
         <Card
@@ -100,14 +93,14 @@ export default function NFTCard( tokenId: {tokenId: number}) {
                     height: 300,
                 }}
             >
-                <Image
+                <NImage
                     // the
-                    src={token.image} // token.image
+                    src={"data:image/jpeg;base64," + token.image} // token.image
                     // src={"data:image/png; " + token.image} // token.image
-                    alt={token.name}
+                    alt={"Unable to fetch Image from IPFS due to file incompatibility."}
                     width={256}
                     height={256}
-                />
+                />x
             </CardContent>
             <CardActions
                 sx={{

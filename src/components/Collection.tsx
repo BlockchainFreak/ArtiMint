@@ -7,7 +7,7 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import NFTCard from "./NFTCard";
 import { abi } from "../lib/getNFTabi"
 
-export default function collections() {
+export default function Collections() {
     const [tokenIds, setTokenIds] = useState<number[]>([])
 
     const provider = useProvider();
