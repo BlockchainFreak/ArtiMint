@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Minter } from '@/components'
 import { useAccount } from 'wagmi'
+import { Box, Typography } from "@mui/material"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +20,14 @@ export default function MintPage() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main>
-        </main></>
+          <Box sx={{ height: '100px' }} />
+          {!isConnected && <Box sx={{ height: '80vh', width: '100vw', display: 'grid', placeItems: 'center' }}>
+            <Typography variant="h2" component="h1" color="white" gutterBottom>
+              Connect Wallet to Mint NFTs
+            </Typography>
+          </Box>}
+        </main>
+      </>
     )
   }
 
@@ -33,6 +40,7 @@ export default function MintPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <Box sx={{ height: '100px' }} />
         <Minter />
       </main>
     </>

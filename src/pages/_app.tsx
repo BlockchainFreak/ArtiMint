@@ -1,7 +1,6 @@
 import '@/styles/globals.css'
 import '@rainbow-me/rainbowkit/styles.css';
 import type { AppProps } from 'next/app'
-import { SessionProvider } from 'next-auth/react';
 import { RecoilRoot } from 'recoil'
 
 import {
@@ -21,11 +20,7 @@ import { mainnet, polygon, polygonMumbai, zkSyncTestnet } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 
-import { RainbowKitSiweNextAuthProvider, GetSiweMessageOptions } from '@rainbow-me/rainbowkit-siwe-next-auth';
-
 import { Alert, Loading, Confirm, Navbar } from '@/components'
-
-const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY
 
 const { chains, provider, webSocketProvider } = configureChains(
   // Add the chains you want to support
@@ -37,9 +32,9 @@ const { chains, provider, webSocketProvider } = configureChains(
   ],
 
   // Adding Alchemy API Key and Public Provider
-  ALCHEMY_API_KEY ?
+  process.env.ALCHEMY_API_KEY ?
     ([
-      alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
+      alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }),
       publicProvider(),
     ]) :
     (
@@ -57,10 +52,6 @@ const { wallets } = getDefaultWallets({
 const demoAppInfo = {
   appName: 'AI DAPP',
 }
-
-const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: 'Sign in to my RainbowKit app',
-});
 
 
 // Create the connectors
@@ -91,19 +82,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <SessionProvider refetchInterval={0} session={pageProps.session}>
-        <RainbowKitSiweNextAuthProvider getSiweMessageOptions={getSiweMessageOptions}>
-          <RainbowKitProvider appInfo={demoAppInfo} chains={chains} coolMode>
-            <RecoilRoot>
-              <Navbar/>
-              <Component {...pageProps} />
-              <Alert />
-              <Loading />
-              <Confirm />
-            </RecoilRoot>
-          </RainbowKitProvider>
-        </RainbowKitSiweNextAuthProvider>
-      </SessionProvider>
+      <RainbowKitProvider appInfo={demoAppInfo} chains={chains} coolMode>
+        <RecoilRoot>
+          <Navbar />
+          <Component {...pageProps} />
+          <Alert />
+          <Loading />
+          <Confirm />
+        </RecoilRoot>
+      </RainbowKitProvider>
     </WagmiConfig>
   )
 }
