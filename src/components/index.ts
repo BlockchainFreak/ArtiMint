@@ -1,6 +1,6 @@
 import Alert from './Alert';
 import Confirm from './Confirm';
-import Modal from './Modal';
+import Loading from './Loading';
 import Navbar from './Navbar';
 import Collection from './Collection';
 import Minter from './Minter';
@@ -8,7 +8,7 @@ import Minter from './Minter';
 export {
     Alert,
     Confirm,
-    Modal,
+    Loading,
     Navbar,
     Collection,
     Minter,

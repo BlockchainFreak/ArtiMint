@@ -1,10 +1,5 @@
 
 import { NFTStorage, File, Blob } from 'nft.storage'
-import NS from 'nft.storage'
-// The 'mime' npm package helps us set the correct file type on our File objects
-import mime from 'mime'
-import fs from 'fs'
-import path from 'path'
 
 // return the ipfs link that can be used as base Uri for the NFT
 export async function storeNFT(imagePath: string, name: string, description: any) {
@@ -34,25 +29,8 @@ export async function fileFromPath(image_b64_json: string) {
     // convert the image_b64_json string to a new File of type image/png
     const content = Buffer.from(image_b64_json, 'base64')
     const blob = new Blob([content], { type: 'image/png' })
-    const file = new File([blob], 'image.png', { type: mime.getType('image.png') })
+    // const file = new File([blob], 'image.png', { type: mime.getType('image.png') })
     return blob
-}
-
-function convertBase64ToImage(base64Data: any) {
-    // Decode the Base64-encoded data
-    var binaryData = atob(base64Data);
-
-    // Create a typed array to hold the binary data
-    var bytes = new Uint8Array(binaryData.length);
-    for (var i = 0; i < binaryData.length; i++) {
-        bytes[i] = binaryData.charCodeAt(i);
-    }
-
-    // Create a blob object from the binary data
-    var blob = new Blob([bytes.buffer], { type: 'image/jpeg' });
-
-    const file = new File([blob], 'image.jpg', { type: mime.getType('image.jpg') })
-    return file
 }
 
 // // convert the image_b64_json string to a buffer

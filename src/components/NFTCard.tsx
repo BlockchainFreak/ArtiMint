@@ -4,7 +4,7 @@ import { Box, Stack, Card, CardHeader, CardActions, CardContent, Button, IconBut
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { type Collection } from 'state'
 import { useAccount, useContract, useProvider } from 'wagmi'
-import { abi } from "../lib/getNFTabi"
+import abi from "../lib/getNftAbi"
 
 export default function NFTCard(tokenId: { tokenId: number }) {
 
@@ -25,19 +25,21 @@ export default function NFTCard(tokenId: { tokenId: number }) {
     useEffect(() => {
         const fetchToken = async () => {
             const tokenURI = await ERC721Contract?.tokenURI(tokenId.tokenId)
-            console.log(token)
+            // console.log(token)
             const metaUri = tokenURI?.replace('ipfs://', 'https://ipfs.io/ipfs/')
             if (!metaUri) return
             const response = await fetch(metaUri)
+            // console.log(response)
             const data = await response.json()
             const imgUrl = data?.image?.replace('ipfs://', 'https://ipfs.io/ipfs/')
+            const bdata = await fetch(imgUrl).then(res => res.blob()).then(blob => blob.arrayBuffer()).then(buffer => Buffer.from(buffer).toString('base64'))
+            console.log(bdata.substring(bdata.length - 10))
             
-
             setToken({
                 name: data?.name,
                 description: data?.description,
                 owner: address ?? "",
-                image: imgUrl,
+                image: bdata,
             })
         }
 
@@ -63,14 +65,16 @@ export default function NFTCard(tokenId: { tokenId: number }) {
             sx={{
                 width: 300,
                 // height: 400,
-                opacity: isHovered ? 1 : 0.8,
                 borderRadius: 2,
                 boxShadow: 2,
+                padding: "2px",
                 cursor: 'pointer',
                 '&:hover': {
                     boxShadow: 3,
+                    backgroundColor: 'rgba(255,255,255, 0.85)',
                     transform: 'translate(-4px,-4px)',
                     width: 308,
+                    padding: "6px",
                 },
             }}
             onMouseEnter={() => setIsHovered(true)}
@@ -95,14 +99,14 @@ export default function NFTCard(tokenId: { tokenId: number }) {
             >
                 <NImage
                     // the
-                    src={"data:image/jpeg;base64," + token.image} // token.image
+                    src={"data:image/png;base64, " + token.image} // token.image
                     // src={"data:image/png; " + token.image} // token.image
-                    alt={"Unable to fetch Image from IPFS due to file incompatibility."}
+                    alt={""}
                     width={256}
                     height={256}
-                />x
+                />
             </CardContent>
-            <CardActions
+            {/* <CardActions
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -124,7 +128,7 @@ export default function NFTCard(tokenId: { tokenId: number }) {
                 >
                     <FavoriteIcon />
                 </IconButton>
-            </CardActions>
+            </CardActions> */}
         </Card>
     )
 

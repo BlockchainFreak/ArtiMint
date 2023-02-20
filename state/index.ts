@@ -18,7 +18,7 @@ export const snackBarState = atom({
     }
 })
 
-export const modalState = atom({
+export const loadingState = atom({
     key: 'modalState',
     default: {
         open: false,
